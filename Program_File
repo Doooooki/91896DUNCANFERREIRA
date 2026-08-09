@@ -1,0 +1,93 @@
+import string
+
+fine_registry = {
+    #dictionary which stores last names (as a outer key), score (int) and grade (str)
+    "Doe":{"first_name": "John","fine":30, "amount over the speed limit (km/h)":"8" , "max speed limit": 50},
+    "Smith":{"first_name": "Jane", "fine":80, "amount over the speed limit (km/h)":"17", "max speed limit": 50},
+    "Anderson":{"first_name": "Michael","fine":30, "amount over the speed limit (km/h)":"5" , "max speed limit": 60},
+    "Wong":{"first_name": "Emily","fine":30, "amount over the speed limit (km/h)":"4", "max speed limit": 40}
+}
+
+
+def home_page ():
+
+
+    valid_menu_input = ("1", "2", "3", "4", "5")
+
+    print("What would you like to do? (use num for input)")
+    menu = input ("1.Record Offender, 2.View All Offenders, 3.Search Specific Offender, 4.Display Patrol Summary, 5.Exit Program:\n")
+
+    
+    
+    if menu not in valid_menu_input:
+
+        return home_page()
+
+
+
+    elif menu == "1" :
+
+        return new_fine_profile()
+
+
+    elif menu == "2" :
+
+        return view_offenders()
+
+
+    elif menu == "3" :
+
+        return new_student_name()
+
+
+    elif menu == "4" :
+
+        return new_student_name()
+
+    elif menu == "5" :
+
+        return new_student_name()
+
+
+    
+
+def view_offenders():
+
+    
+    for key, value in fine_registry.items():
+        print(f"Last Name: {key} , First name: {value['first_name']} , Fine amount: ${value['fine']}")
+
+       
+
+
+
+def new_fine_profile():
+
+
+    
+    #creates a new student profile that will be stored on students_scores (includes name only)
+    fine_last_name = str
+    fine_first_name = str
+
+    fine_last_name = str (input("Enter a last name (or type 'leave' to exit): ").title())
+
+
+
+    fine_first_name = str (input("Enter a first name (or type 'leave' to exit): ").title())
+
+
+    while fine_last_name.title() or fine_first_name.title() != "leave":
+
+
+        home_page()
+
+    
+    fine_registry[fine_last_name.title] = fine_first_name.title = input("Enter a last name (or type 'exit' to quit): ".title)
+
+    home_page()
+
+
+
+
+#catalist for the rest of the code
+home_page()
