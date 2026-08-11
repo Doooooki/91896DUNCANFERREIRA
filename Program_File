@@ -87,8 +87,7 @@ def view_offenders():
     for key, value in fine_registry.items():
         print(f"Last Name: {key} , First name: {value['first_name']} , Fine amount: ${value['fine']}")
     
-#catalist for the rest of the code
-home_page()
+
 
 
 #catalist for the rest of the code
