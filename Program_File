@@ -52,17 +52,17 @@ def home_page ():
 def new_fine_profile():
 
     #creates a new student profile that will be stored on students_scores (includes name only)
-    fine_last_name = str
-    fine_first_name = str
+    global fine_last_name
+    global fine_first_name
 
-    fine_last_name = str (input("Enter a last name (or type 'leave' to exit): ").title())
+    fine_last_name = (input("Enter a last name (or type 'leave' to exit): ").title())
 
     if fine_last_name == "Leave":
 
         home_page()
 
 
-    fine_first_name = str (input("Enter a first name (or type 'leave' to exit): ").title())
+    fine_first_name = (input("Enter a first name (or type 'leave' to exit): ").title())
 
     if fine_first_name == "Leave":
             
@@ -76,8 +76,45 @@ def new_fine_profile():
     
 
 def new_fine_amount ():
-    #this function calculates the amount that a offender has done over the speed limit and issues the correct amount of fine for said offender
-    print("works")
+    #this function calculates the amount that a offender 
+    #has done over the speed limit and issues the correct amount of fine for said offender
+
+    speed_limit =int (input("Please enter road speed limit (km/h):"))
+    speed_driver = int(input("Please enter drivers speed (km/h):"))
+
+    over_speed = int (speed_driver - speed_limit)
+
+    if 1 <= over_speed <= 10:
+
+        fine_amount = 30
+        fine_registry.update({fine_last_name: [fine_first_name, fine_amount]})
+        return home_page()
+
+    elif 11 <= over_speed <= 20:
+
+        fine_amount = 80
+        fine_registry.update({fine_last_name: [fine_first_name, fine_amount]})
+        return home_page()
+
+    elif 21 <= over_speed <= 30:
+
+        fine_amount = 170
+        fine_registry.update({fine_last_name: [fine_first_name, fine_amount]})    
+        return home_page()
+
+    elif 31 <= over_speed <= 40:
+
+        fine_amount = 400
+        fine_registry.update({fine_last_name: [fine_first_name, fine_amount]})
+        return home_page()
+    
+    elif over_speed > 40:
+
+        fine_amount = 630
+        fine_registry.update({fine_last_name: [fine_first_name, fine_amount]})
+        return home_page()
+        
+    
     
 
 
@@ -87,8 +124,5 @@ def view_offenders():
     for key, value in fine_registry.items():
         print(f"Last Name: {key} , First name: {value['first_name']} , Fine amount: ${value['fine']}")
     
-
-
-
 #catalist for the rest of the code
 home_page()
