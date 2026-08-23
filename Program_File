@@ -2,14 +2,17 @@ import string
 import os
 
 def clear_console():
+    #allows me to clear the console
     os.system('cls' if os.name == 'nt' else 'clear')
 
 fine_registry = {
-    #dictionary which stores last names (as a outer key), score (int) and grade (str)
-    "Doe":{"first_name": "John","fine":30, "amount over the speed limit (km/h)":8 , "max speed limit": 50},
-    "Smith":{"first_name": "Jane", "fine":80, "amount over the speed limit (km/h)":17, "max speed limit": 50},
-    "Anderson":{"first_name": "Michael","fine":30, "amount over the speed limit (km/h)":5 , "max speed limit": 60},
-    "Wong":{"first_name": "Emily","fine":30, "amount over the speed limit (km/h)":4, "max speed limit": 40}
+    #dictionary which stores last names (as a outer key), first name(str) 
+    #fine (int), max speed limit (int) and Wanted (Boolean)
+
+    "Doe":{"first_name": "John","fine":30, "speed":58 , "max speed limit": 50, "wanted (True or False)": "False", "license plate": "HQG739910"},
+    "Smith":{"first_name": "Jane", "fine":80, "speed":67, "max speed limit": 50, "wanted (True or False)": "True", "license plate": "AT428722"},
+    "Anderson":{"first_name": "Michael","fine":30, "speed":65 , "max speed limit": 60, "wanted (True or False)": "False", "license plate": "VHT823010"},
+    "Wong":{"first_name": "Emily","fine":30, "speed":44, "max speed limit": 40, "wanted (True or False)": "False", "license plate": "LKP102958"}
 }
 
 def home_page ():
@@ -78,13 +81,23 @@ def new_fine_profile():
    
 
 def new_fine_amount ():
+
     #this function calculates the amount that a offender
     #has done over the speed limit and issues the correct amount of fine for said offender
+    speed_limit = input("Please enter road speed limit (km/h):")
+    
+    if speed_limit.isalpha():
 
-    speed_limit =int (input("Please enter road speed limit (km/h):"))
+        new_fine_amount()
+        clear_console()
+    
+    
+    
     speed_driver = int(input("Please enter drivers speed (km/h):"))
 
+
     over_speed = int (speed_driver - speed_limit)
+
 
     if 1 <= over_speed <= 10:
 
@@ -115,8 +128,9 @@ def new_fine_amount ():
        
         "first_name": fine_first_name,
         "fine": fine_amount,
-        "amount over the speed limit (km/h)": over_speed,
+        "speed": over_speed,
         "max speed limit": speed_limit
+        #"license plate": fine_license
        
     }
    
@@ -128,7 +142,8 @@ def view_offenders():
 
    
     for key, value in fine_registry.items():
-        print(f"Last Name: {key} , First name: {value['first_name']} , Fine amount: ${value['fine']}")
+        print(f"Last Name: {key} , First name: {value['first_name']} , Fine amount: ${value['fine']} ,Speed (km/h): {value['speed']} , Road Limit (km/h): {value['max speed limit']} , License: {value['license plate']}" )
    
 #catalist for the rest of the code
 home_page()
+
