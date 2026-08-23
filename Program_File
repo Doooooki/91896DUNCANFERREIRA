@@ -31,7 +31,7 @@ def home_page ():
     elif menu == "1" :
 
         clear_console()
-        return new_fine_profile()
+        return new_fine_last_name()
 
 
     elif menu == "2" :
@@ -47,14 +47,14 @@ def home_page ():
 
     elif menu == "4" :
 
-        return new_student_name()
+        return patrol_summary()
 
 
     elif menu == "5" :
 
-        return new_student_name()
+        return exit_program()
        
-def new_fine_profile():
+def new_fine_last_name():
 
     #creates a new student profile that will be stored on students_scores (includes name only)
     global fine_last_name
@@ -66,6 +66,14 @@ def new_fine_profile():
 
         home_page()
 
+    elif fine_last_name.strip(string.whitespace) or string.punctuation:
+        
+        new_fine_last_name()
+
+    else:
+        new_fine_first_name()
+
+def new_fine_first_name():
 
     fine_first_name = (input("Enter a first name (or type 'leave' to exit): ").title())
 
@@ -73,14 +81,17 @@ def new_fine_profile():
            
         home_page()
 
+    elif fine_first_name.strip(string.whitespace) or string.punctuation:
+        
+        new_fine_first_name()
+
+
     else:
-
-
         #moves onto function which does all the calculations for issuing fines
-        new_fine_amount ()
+        new_speed_limit ()
    
 
-def new_fine_amount ():
+def new_speed_limit ():
 
     #this function calculates the amount that a offender
     #has done over the speed limit and issues the correct amount of fine for said offender
@@ -88,18 +99,25 @@ def new_fine_amount ():
     
     if speed_limit.isalpha():
 
-        new_fine_amount()
+        new_speed_limit()
         clear_console()
+
+    else:
+        new_driver_speed()
     
     
-    
+def new_driver_speed():
     speed_driver = int(input("Please enter drivers speed (km/h):"))
 
 
     over_speed = int (speed_driver - speed_limit)
 
+    if over_speed.isalpha ():
 
-    if 1 <= over_speed <= 10:
+        new_driver_speed()
+
+
+    elif 1 <= over_speed <= 10:
 
         fine_amount = 30
        
@@ -144,6 +162,12 @@ def view_offenders():
     for key, value in fine_registry.items():
         print(f"Last Name: {key} , First name: {value['first_name']} , Fine amount: ${value['fine']} ,Speed (km/h): {value['speed']} , Road Limit (km/h): {value['max speed limit']} , License: {value['license plate']}" )
    
-#catalist for the rest of the code
-home_page()
 
+
+def patrol_summary():
+    print ("works")
+
+
+#catalist for the rest of the code
+
+home_page()
