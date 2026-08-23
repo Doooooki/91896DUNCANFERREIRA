@@ -9,10 +9,10 @@ fine_registry = {
     #dictionary which stores last names (as a outer key), first name(str) 
     #fine (int), max speed limit (int) and Wanted (Boolean)
 
-    "Doe":{"first_name": "John","fine":30, "speed":58 , "max speed limit": 50, "wanted (True or False)": "False", "license plate": "HQG739910"},
-    "Smith":{"first_name": "Jane", "fine":80, "speed":67, "max speed limit": 50, "wanted (True or False)": "True", "license plate": "AT428722"},
-    "Anderson":{"first_name": "Michael","fine":30, "speed":65 , "max speed limit": 60, "wanted (True or False)": "False", "license plate": "VHT823010"},
-    "Wong":{"first_name": "Emily","fine":30, "speed":44, "max speed limit": 40, "wanted (True or False)": "False", "license plate": "LKP102958"}
+    "Doe":{"first_name": "John","fine":30, "speed":58 , "max speed limit": 50, "wanted (True or False)": False, "license plate": "HQG739910"},
+    "Smith":{"first_name": "Jane", "fine":80, "speed":67, "max speed limit": 50, "wanted (True or False)": True, "license plate": "AT428722"},
+    "Anderson":{"first_name": "Michael","fine":30, "speed":65 , "max speed limit": 60, "wanted (True or False)": False, "license plate": "VHT823010"},
+    "Wong":{"first_name": "Emily","fine":30, "speed":44, "max speed limit": 40, "wanted (True or False)": False, "license plate": "LKP102958"}
 }
 
 def home_page ():
@@ -58,7 +58,7 @@ def new_fine_last_name():
 
     #creates a new student profile that will be stored on students_scores (includes name only)
     global fine_last_name
-    global fine_first_name
+    
 
     fine_last_name = (input("Enter a last name (or type 'leave' to exit): ").title())
 
@@ -66,14 +66,19 @@ def new_fine_last_name():
 
         home_page()
 
-    elif fine_last_name.strip(string.whitespace) or string.punctuation:
+    elif fine_last_name.isdigit or "":
         
         new_fine_last_name()
 
     else:
+
         new_fine_first_name()
 
+
+
 def new_fine_first_name():
+
+    global fine_first_name
 
     fine_first_name = (input("Enter a first name (or type 'leave' to exit): ").title())
 
@@ -81,14 +86,13 @@ def new_fine_first_name():
            
         home_page()
 
-    elif fine_first_name.strip(string.whitespace) or string.punctuation:
-        
-        new_fine_first_name()
+    elif fine_first_name.isdigit or "":
 
-
+        new_speed_limit ()
+    
     else:
         #moves onto function which does all the calculations for issuing fines
-        new_speed_limit ()
+        new_speed_limit()
    
 
 def new_speed_limit ():
@@ -99,8 +103,8 @@ def new_speed_limit ():
     
     if speed_limit.isalpha():
 
-        new_speed_limit()
         clear_console()
+        new_speed_limit()
 
     else:
         new_driver_speed()
@@ -164,8 +168,8 @@ def view_offenders():
    
 
 
-def patrol_summary():
-    print ("works")
+#def patrol_summary():
+    
 
 
 #catalist for the rest of the code
