@@ -1,18 +1,18 @@
 import string
 import os
 
+
+
 def clear_console():
-    #allows me to clear the console
     os.system('cls' if os.name == 'nt' else 'clear')
 
 fine_registry = {
-    #dictionary which stores last names (as a outer key), first name(str) 
-    #fine (int), max speed limit (int) and Wanted (Boolean)
-
-    "Doe":{"first_name": "John","fine":30, "speed":58 , "max speed limit": 50, "wanted (True or False)": False, "license plate": "HQG739910"},
-    "Smith":{"first_name": "Jane", "fine":80, "speed":67, "max speed limit": 50, "wanted (True or False)": True, "license plate": "AT428722"},
-    "Anderson":{"first_name": "Michael","fine":30, "speed":65 , "max speed limit": 60, "wanted (True or False)": False, "license plate": "VHT823010"},
-    "Wong":{"first_name": "Emily","fine":30, "speed":44, "max speed limit": 40, "wanted (True or False)": False, "license plate": "LKP102958"}
+    #dictionary which stores last names (as a outer key), first name (str), fine amount (int)
+    #speed amount (int), speed limit (int), wanted (boolean), license plate (str)
+    "Doe":{"first_name": "John","fine":30, "speed":58 , "max speed limit": 50, "wanted": False, "license plate": "HQG739910"},
+    "Smith":{"first_name": "Jane", "fine":80, "speed":67, "max speed limit": 50, "wanted": True, "license plate": "AT428722"},
+    "Anderson":{"first_name": "Michael","fine":30, "speed":65 , "max speed limit": 60, "wanted": False, "license plate": "VHT823010"},
+    "Wong":{"first_name": "Emily","fine":30, "speed":44, "max speed limit": 40, "wanted": False, "license plate": "LKP102958"}
 }
 
 def home_page ():
@@ -22,7 +22,7 @@ def home_page ():
     print("What would you like to do? (use num for input)")
     menu = input ("1.Record Offender, 2.View All Offenders, 3.Search Specific Offender, 4.Display Patrol Summary, 5.Exit Program:\n")
 
-    #checks if 
+    #checks if anything other than 1-5 is selectedd
     if menu not in valid_menu_input:
 
         return home_page()
@@ -42,23 +42,28 @@ def home_page ():
 
     elif menu == "3" :
 
-        return new_student_name()
+        clear_console()
+        return find_specific_offender()
 
 
     elif menu == "4" :
 
+        clear_console()
         return patrol_summary()
 
 
-    elif menu == "5" :
-
+    elif menu == "5":
+        clear_console()
         return exit_program()
        
-def new_fine_last_name():
 
-    #creates a new student profile that will be stored on students_scores (includes name only)
+def new_fine_last_name():
+    clear_console()
+
+    #creates a fine user which will store last name as key within dictionary
+
     global fine_last_name
-    
+   
 
     fine_last_name = (input("Enter a last name (or type 'leave' to exit): ").title())
 
@@ -66,7 +71,12 @@ def new_fine_last_name():
 
         home_page()
 
-    elif fine_last_name.isdigit or "":
+    elif fine_last_name.isdigit() or fine_last_name == "":
+
+        
+        new_fine_last_name()
+
+    elif any(char in string.punctuation for char in fine_last_name):
         
         new_fine_last_name()
 
@@ -79,96 +89,204 @@ def new_fine_last_name():
 def new_fine_first_name():
 
     global fine_first_name
-
+    clear_console()
     fine_first_name = (input("Enter a first name (or type 'leave' to exit): ").title())
 
     if fine_first_name == "Leave":
            
         home_page()
 
-    elif fine_first_name.isdigit or "":
+    elif fine_first_name.isdigit() or fine_first_name == "":
+        
+        new_fine_first_name ()
 
-        new_speed_limit ()
-    
+    elif any(char in string.punctuation for char in fine_first_name):
+
+        
+        new_fine_first_name()
+   
     else:
-        #moves onto function which does all the calculations for issuing fines
+        #moves onto function which does all the calculations for isuing fines
         new_speed_limit()
+
+def license_plate():
+
+    new_license = (input("Enter a first name (or type 'leave' to exit): ").title())
+
+
+def new_speed_limit():
+
+    # allows user to set road speed limit
+    global speed_limit
+
+    speed_limit = input("Please enter road speed limit (km/h) or type leave to exit: ").strip()
+
+
+    #allows user to exit
+    if speed_limit.lower() == "leave":
+        home_page()
+        return
+
+    # checks if input only contains numbers
+    elif not speed_limit.isdigit():
+        clear_console()
+        print("Please enter a valid speed limit.")
+        new_speed_limit()
+        return
    
 
-def new_speed_limit ():
 
-    #this function calculates the amount that a offender
-    #has done over the speed limit and issues the correct amount of fine for said offender
-    speed_limit = input("Please enter road speed limit (km/h):")
-    
-    if speed_limit.isalpha():
+    # converts variable to int
+    speed_limit = int(speed_limit)
+
+    new_driver_speed()
+
+
+def new_driver_speed():
+
+    global speed_driver
+    global fine_amount
+    global over_speed
+   
+    speed_driver = input("Please enter driver's speed (km/h) or type leave to exit: ").strip()
+
+    #allows user to exit
+    if speed_driver.lower() == "leave":
+        home_page()
+        return
+
+    # Check that the input contains only numbers
+    if not speed_driver.isdigit():
 
         clear_console()
-        new_speed_limit()
-
-    else:
+        print("Please enter a valid speed.")
         new_driver_speed()
-    
-    
-def new_driver_speed():
-    speed_driver = int(input("Please enter drivers speed (km/h):"))
+        return
 
+    speed_driver = int(speed_driver)
 
-    over_speed = int (speed_driver - speed_limit)
+    over_speed = speed_driver - speed_limit
 
-    if over_speed.isalpha ():
+    # checks if driver was not going over limit
+    if over_speed <= 0:
+
+        clear_console()
+        print("Individual has not committed an offense.")
 
         new_driver_speed()
+        return
 
+    # all of these calculate total fine
+    if 1 <= over_speed <= 10:
 
-    elif 1 <= over_speed <= 10:
 
         fine_amount = 30
-       
+
 
     elif 11 <= over_speed <= 20:
 
+
         fine_amount = 80
-       
 
     elif 21 <= over_speed <= 30:
 
+
+
         fine_amount = 170
-       
 
     elif 31 <= over_speed <= 40:
 
+
         fine_amount = 400
-       
-   
-    elif over_speed > 40:
+
+    else:
 
         fine_amount = 630
-       
-       
-    fine_registry[fine_last_name] = {
-       
-        "first_name": fine_first_name,
-        "fine": fine_amount,
-        "speed": over_speed,
-        "max speed limit": speed_limit
-        #"license plate": fine_license
-       
-    }
    
-    home_page()
 
+    wanted_status()
+   
+def wanted_status():
+    clear_console()
+    global wanted
+    wanted= bool ()
+    new_wanted_status = (input("Would you like to make this offender part of the wanted list (Yes or No): ").title())
+
+    if new_wanted_status.isdigit() or new_wanted_status == "":
+        wanted_status()
+
+    elif new_wanted_status == "Yes":
+        wanted = True
+
+
+    elif new_wanted_status == "No" :
+        wanted = False
+
+    else: wanted_status()
+   
+    fine_registry[fine_last_name] = {
+
+    "first_name": fine_first_name,
+    "fine": fine_amount,
+    "amount over the speed limit (km/h)": over_speed,
+    "max speed limit": speed_limit,
+    "wanted": wanted}
+
+    home_page()
+       
+       
 
 
 def view_offenders():
 
    
     for key, value in fine_registry.items():
-        print(f"Last Name: {key} , First name: {value['first_name']} , Fine amount: ${value['fine']} ,Speed (km/h): {value['speed']} , Road Limit (km/h): {value['max speed limit']} , License: {value['license plate']}" )
+        print(f"Last Name: {key} , First name: {value['first_name']} , Fine amount: ${value['fine']}, Wanted Status: {value['wanted']}")
+
+
+
+def find_specific_offender():
+
+
+    query= input ("Please enter last name of offender (or type 'leave' to exit the finder:")
+
    
+    if query in fine_registry:
+
+        print (fine_registry[query])
+
+    elif query == "leave" :
+
+        home_page()
+
+    else:
+        print ("No offender found...")
+        find_specific_offender()
+       
+
+    home_page()
 
 
-#def patrol_summary():
+
+
+
+def exit_program():
+    #simply exits the entire program
+    clear_console()
+    print("Thank you for using the Patrol Offender System.")
+   
+    print("Exiting program...")
+
+    exit()
+
+
+   
+   
+       
+
+#catalist for the rest of the code
+home_page()
+
     
 
 
