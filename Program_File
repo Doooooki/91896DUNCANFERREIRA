@@ -1,18 +1,16 @@
 import string
 import os
 
-
-
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 fine_registry = {
     #dictionary which stores last names (as a outer key), first name (str), fine amount (int)
     #speed amount (int), speed limit (int), wanted (boolean), license plate (str)
-    "Doe":{"first_name": "John","fine":30, "speed":58 , "max speed limit": 50, "wanted": False, "license plate": "HQG739910"},
-    "Smith":{"first_name": "Jane", "fine":80, "speed":67, "max speed limit": 50, "wanted": True, "license plate": "AT428722"},
-    "Anderson":{"first_name": "Michael","fine":30, "speed":65 , "max speed limit": 60, "wanted": False, "license plate": "VHT823010"},
-    "Wong":{"first_name": "Emily","fine":30, "speed":44, "max speed limit": 40, "wanted": False, "license plate": "LKP102958"}
+    "Doe":{"first_name": "John","fine":30, "speed":58 , "max speed limit": 50, "wanted": False, "license number": "HQG739910"},
+    "Smith":{"first_name": "Jane", "fine":80, "speed":67, "max speed limit": 50, "wanted": True, "license number": "AT428722"},
+    "Anderson":{"first_name": "Michael","fine":30, "speed":65 , "max speed limit": 60, "wanted": False, "license number": "VHT823010"},
+    "Wong":{"first_name": "Emily","fine":30, "speed":44, "max speed limit": 40, "wanted": False, "license number": "LKP102958"}
 }
 
 def home_page ():
@@ -107,15 +105,26 @@ def new_fine_first_name():
    
     else:
         #moves onto function which does all the calculations for isuing fines
-        new_speed_limit()
+        license_plate()
 
 def license_plate():
+    clear_console()
+    global new_license
+    new_license = (input("Enter New license number (or type leave to exit):").title())
 
-    new_license = (input("Enter a first name (or type 'leave' to exit): ").title())
+    while len(new_license) > 8 or len(new_license) < 8:
+        
+        license_plate()
+
+    if new_license == "Leave":
+        home_page()
+
+    new_speed_limit()
 
 
 def new_speed_limit():
-
+    clear_console()
+    
     # allows user to set road speed limit
     global speed_limit
 
@@ -230,7 +239,8 @@ def wanted_status():
     "fine": fine_amount,
     "amount over the speed limit (km/h)": over_speed,
     "max speed limit": speed_limit,
-    "wanted": wanted}
+    "wanted": wanted,
+    "license number" : new_license}
 
     home_page()
        
@@ -239,23 +249,32 @@ def wanted_status():
 
 def view_offenders():
 
-   
+    clear_console()
     for key, value in fine_registry.items():
-        print(f"Last Name: {key} , First name: {value['first_name']} , Fine amount: ${value['fine']}, Wanted Status: {value['wanted']}")
+        print(f"Last Name: {key} , First name: {value['first_name']} , Fine amount: ${value['fine']}, Wanted Status: {value['wanted']}, License Number: {value['license number']} ")
 
+    quit= input ("Type 'Leave' to head to the main menu:").title()
 
+    if quit == "Leave":
 
+        home_page()
+
+    else: 
+        view_offenders()
+
+    
+       
 def find_specific_offender():
 
 
-    query= input ("Please enter last name of offender (or type 'leave' to exit the finder:")
+    query= input ("Please enter last name of offender (or type 'leave' to exit the finder:".title())
 
    
     if query in fine_registry:
 
         print (fine_registry[query])
 
-    elif query == "leave" :
+    elif query == "Leave" :
 
         home_page()
 
@@ -263,11 +282,66 @@ def find_specific_offender():
         print ("No offender found...")
         find_specific_offender()
        
+def patrol_summary():
+
+    total_fines = len(fine_registry)
+
+   
+    total_fine_amount = 0
+   
+
+    highest_offender = None
+   
+    highest_speed = 0
+
+    for last_name, offender in fine_registry.items():
+
+        # Add the fine to the total
+        total_fine_amount += offender["fine"]
+
+        # Calculate how far over the limit they were
+        if "amount over the speed limit (km/h)" in offender:
+
+            over_speed = offender["amount over the speed limit (km/h)"]
+
+        else:
+
+            over_speed = offender["speed"] - offender["max speed limit"]
+
+        # Check if this is the highest offender
+        if over_speed > highest_speed:
+
+            highest_speed = over_speed
+
+            highest_offender = (
+                offender["first_name"] + " " + last_name
+            )
+
+    clear_console()
+
+
+
+    print(f"Total fines issued: {total_fines}")
+   
+    print(f"Total amount in fines: ${total_fine_amount}")
+   
+    if highest_offender is not None:
+
+        print(f"Highest speeding offender: {highest_offender}")
+
+       
+        print(f"Amount over speed limit: {highest_speed} km/h")
+
+    else:
+
+        print("Highest speeding offender: None")
+
+
+
+
+    input("\nPress Enter to return to the home page:")
 
     home_page()
-
-
-
 
 
 def exit_program():
@@ -280,16 +354,9 @@ def exit_program():
     exit()
 
 
-   
-   
-       
-
-#catalist for the rest of the code
-home_page()
-
     
 
-
 #catalist for the rest of the code
-
 home_page()
+
+
